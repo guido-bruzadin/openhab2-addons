@@ -14,4 +14,12 @@
 
   <name>SamsungTV Binding</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>javax.websocket</groupId>
+      <artifactId>javax.websocket-client-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
 </project>

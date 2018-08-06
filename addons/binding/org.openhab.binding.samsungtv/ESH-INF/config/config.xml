@@ -11,7 +11,7 @@
 		</parameter>
 		<parameter name="port" type="integer" min="1" max="65335">
 			<label>TCP Port</label>
-			<description>TCP port of the Samsung TV.</description>
+			<description>TCP port of the Samsung TV. (When useWebsocket is active the default port is 8001).</description>
 			<default>55000</default>
 		</parameter>
 		<parameter name="refreshInterval" type="integer" unit="ms">
@@ -19,6 +19,12 @@
 			<description>States how often a refresh shall occur in milliseconds.
 			</description>
 			<default>1000</default>
+		</parameter>
+		<parameter name="useWebsocket" type="boolean" required="true">
+			<label>Use Websocket</label>
+			<description>When use websocket for communication with new Samsung Smart TVs
+			</description>
+			<default>true</default>
 		</parameter>
 	</config-description>
 

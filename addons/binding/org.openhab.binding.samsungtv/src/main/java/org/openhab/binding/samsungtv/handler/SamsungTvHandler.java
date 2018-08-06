@@ -348,7 +348,7 @@ public class SamsungTvHandler extends BaseThingHandler implements DiscoveryListe
         try {
             if (services.isEmpty()) {
                 RemoteControllerService service = RemoteControllerService.createNonUpnpService(configuration.hostName,
-                        configuration.port);
+                        configuration.port, configuration.useWebsocket);
 
                 if (service.checkConnection()) {
                     startService(service);

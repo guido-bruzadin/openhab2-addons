@@ -1,19 +1,12 @@
 /**
  * Copyright (c) 2010-2018 by the respective copyright holders.
- *
+ * <p>
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
 package org.openhab.binding.samsungtv.internal.service;
-
-import static org.openhab.binding.samsungtv.SamsungTvBindingConstants.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
@@ -24,10 +17,22 @@ import org.eclipse.smarthome.core.types.Command;
 import org.openhab.binding.samsungtv.internal.protocol.KeyCode;
 import org.openhab.binding.samsungtv.internal.protocol.RemoteController;
 import org.openhab.binding.samsungtv.internal.protocol.RemoteControllerException;
+import org.openhab.binding.samsungtv.internal.protocol.RemoteControllerFactory;
 import org.openhab.binding.samsungtv.internal.service.api.EventListener;
 import org.openhab.binding.samsungtv.internal.service.api.SamsungTvService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static org.openhab.binding.samsungtv.SamsungTvBindingConstants.CHANNEL;
+import static org.openhab.binding.samsungtv.SamsungTvBindingConstants.KEY_CODE;
+import static org.openhab.binding.samsungtv.SamsungTvBindingConstants.MUTE;
+import static org.openhab.binding.samsungtv.SamsungTvBindingConstants.POWER;
+import static org.openhab.binding.samsungtv.SamsungTvBindingConstants.VOLUME;
 
 /**
  * The {@link RemoteControllerService} is responsible for handling remote
@@ -47,23 +52,25 @@ public class RemoteControllerService implements SamsungTvService {
 
     private String host;
     private int port;
+    private boolean useWebsocket;
     private boolean upnp;
 
     private List<EventListener> listeners = new CopyOnWriteArrayList<>();
 
-    private RemoteControllerService(String host, int port, boolean upnp) {
+    private RemoteControllerService(String host, int port, boolean useWebsocket, boolean upnp) {
         logger.debug("Create a Samsung TV RemoteController service");
         this.upnp = upnp;
         this.host = host;
         this.port = port;
+        this.useWebsocket = useWebsocket;
     }
 
     static RemoteControllerService createUpnpService(String host, int port) {
-        return new RemoteControllerService(host, port, true);
+        return new RemoteControllerService(host, port, false, true);
     }
 
-    public static RemoteControllerService createNonUpnpService(String host, int port) {
-        return new RemoteControllerService(host, port, false);
+    public static RemoteControllerService createNonUpnpService(String host, int port, boolean useWebsocket) {
+        return new RemoteControllerService(host, port, useWebsocket, false);
     }
 
     @Override
@@ -237,6 +244,6 @@ public class RemoteControllerService implements SamsungTvService {
     }
 
     private RemoteController getRemoteController() {
-        return new RemoteController(host, port, "openHAB", "openHAB");
+        return RemoteControllerFactory.createRemoteController(host, port, useWebsocket, "openHAB", "openHAB");
     }
 }

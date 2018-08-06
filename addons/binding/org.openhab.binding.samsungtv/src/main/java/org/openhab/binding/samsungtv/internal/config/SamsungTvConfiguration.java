@@ -16,12 +16,15 @@ import org.openhab.binding.samsungtv.handler.SamsungTvHandler;
  * @author Pauli Anttila - Initial contribution
  */
 public class SamsungTvConfiguration {
+
     public static final String HOST_NAME = "hostName";
     public static final String PORT = "port";
     public static final String REFRESH_INTERVAL = "refreshInterval";
+    public static final String USE_WEBSOCKET = "useWebsocket";
 
     public String hostName;
     public int port;
     public int refreshInterval;
+    public boolean useWebsocket;
 
 }
